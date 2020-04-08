@@ -15,10 +15,11 @@ import java.util.List;
 
 public class Application {
     public static void main(String[] args) throws RemotingException, MQClientException, InterruptedException, MQBrokerException {
-        DefaultMQProducer producer = new DefaultMQProducer();
+        DefaultMQProducer producer = new DefaultMQProducer("group1");
         producer.setNamesrvAddr("");
 
         Message msg = new Message();
+
 
         producer.send(msg);
         producer.sendOneway(msg);
@@ -35,10 +36,15 @@ public class Application {
         });
 
         DefaultMQPushConsumer consumer = new DefaultMQPushConsumer();
+consumer.setNamesrvAddr("");
+        consumer.suspend();
+        consumer.shutdown();
+        consumer.start();
         consumer.setConsumeMessageBatchMaxSize(3);
         consumer.getConsumeMessageBatchMaxSize();
         consumer.setNamesrvAddr("");
         consumer.subscribe("", "");
+
         consumer.registerMessageListener(new MessageListenerOrderly() {
             @Override
             public ConsumeOrderlyStatus consumeMessage(List<MessageExt> msgs, ConsumeOrderlyContext context) {
