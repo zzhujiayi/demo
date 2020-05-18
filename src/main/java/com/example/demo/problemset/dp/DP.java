@@ -1,4 +1,4 @@
-package com.example.demo.dp;
+package com.example.demo.problemset.dp;
 
 public class DP {
     public static void main(String[] args) {

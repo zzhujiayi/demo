@@ -1,4 +1,4 @@
-package com.example.demo.sort;
+package com.example.demo.problemset.sort;
 
 import java.util.HashMap;
 import java.util.HashSet;

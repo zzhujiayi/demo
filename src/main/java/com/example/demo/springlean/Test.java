@@ -1,18 +1,24 @@
 package com.example.demo.springlean;
 
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
-//@Component
+@Data
+@Component
+//@Scope("prototype")
 public class Test {
 
     public Test() {
 
     }
 
+    @Autowired
     private TestB testB;
 
     public Test(TestB testB) {
-        
+
         this.testB = testB;
     }
 
@@ -21,7 +27,7 @@ public class Test {
         return testB;
     }
 
-    @Autowired
+
     public void setTestB(TestB testB) {
         this.testB = testB;
     }

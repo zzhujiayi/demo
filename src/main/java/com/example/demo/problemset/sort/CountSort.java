@@ -1,4 +1,4 @@
-package com.example.demo.sort;
+package com.example.demo.problemset.sort;
 
 public class CountSort {
     public static void main(String[] args) {

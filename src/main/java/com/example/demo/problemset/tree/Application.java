@@ -1,40 +1,40 @@
-package com.example.demo.tree;
-
-import org.springframework.beans.factory.BeanFactory;
-import org.springframework.beans.factory.FactoryBean;
-import org.springframework.beans.factory.config.BeanDefinition;
-import sun.misc.Unsafe;
+package com.example.demo.problemset.tree;
 
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.LongAdder;
 
 public class Application {
     private int intAns;
 
     public static void main(String[] args) {
+        TreeNode root = new TreeNode(1);
+        root.left = new TreeNode(2);
+        root.left.left = new TreeNode(3);
+        root.left.right = new TreeNode(4);
+        root.right = new TreeNode(5);
+        root.right.right = new TreeNode(6);
 
-
+        flatten(root);
     }
 
-    public void flatten(TreeNode root) {
+    public static void flatten(TreeNode root) {
         if (root == null) {
             return;
         }
 
         flatten(root.right);
-        if (root.left != null) {
-            TreeNode right = root.right;
-            root.right = root.left;
-            if (pre != null) {
-                pre.right = right;
-            }
+        flatten(root.left);
 
-            pre = root.right;
+        root.right = pre;
+        root.left = null;
+        pre = root;
+    }
 
-            flatten(root.right);
+    private static TreeNode getRightChild(TreeNode node) {
+        while (node.right != null) {
+            node = node.right;
         }
 
+        return node;
     }
 
     public TreeNode buildTree_post(int[] inorder, int[] postorder) {

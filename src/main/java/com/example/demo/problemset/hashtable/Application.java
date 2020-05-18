@@ -1,4 +1,4 @@
-package com.example.demo.hashtable;
+package com.example.demo.problemset.hashtable;
 
 import java.util.*;
 

@@ -1,4 +1,4 @@
-package com.example.demo.tree;
+package com.example.demo.problemset.tree;
 
 import java.util.List;
 

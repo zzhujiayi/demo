@@ -1,6 +1,19 @@
 package com.example.demo.springlean;
 
+import lombok.Data;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.AutoConfigureOrder;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
+@Data
+@Component
+//@Scope("prototype")
 public class TestB {
+
+    @Autowired
+    private Test  test;
+
     private int i = 0;
 
     private int getI() {

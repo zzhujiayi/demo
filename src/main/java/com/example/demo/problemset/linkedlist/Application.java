@@ -1,21 +1,98 @@
-package com.example.demo.linkedlist;
+package com.example.demo.problemset.linkedlist;
 
-import com.example.demo.tree.TreeNode;
+import com.example.demo.problemset.tree.TreeNode;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 
 public class Application {
     public static void main(String[] args) {
-        MyLinkedList linkedList = new MyLinkedList();
-        linkedList.addAtHead(0);
-        linkedList.addAtIndex(1, 4);
-        linkedList.addAtTail(8);
-        linkedList.addAtHead(5);
-        linkedList.addAtIndex(4, 3);
-        linkedList.addAtTail(0);
-        linkedList.addAtTail(5);
-        linkedList.addAtIndex(6, 3);
-        linkedList.deleteAtIndex(7);
+        ListNode listNode = new ListNode(-1);
+        listNode.next = new ListNode(5);
+        listNode.next.next = new ListNode(3);
+        listNode.next.next.next = new ListNode(4);
+        listNode.next.next.next.next = new ListNode(0);
+        listNode.next.next.next.next.next = new ListNode(9);
+        listNode.next.next.next.next.next.next = new ListNode(3);
+        listNode.next.next.next.next.next.next.next = new ListNode(2);
+
+        ListNode res = sortList(listNode);
+        while (res != null) {
+            System.out.println(res.val);
+            res = res.next;
+        }
+    }
+
+    public ListNode mergeKLists(ListNode[] lists) {
+        ListNode listNode=new ListNode(0);
+        for (int i = 0; i < lists.length; i += 2) {
+
+        }
+
+        return listNode.next;
+    }
+
+    public static ListNode sortList(ListNode head) {
+        return sortListCore(head, null);
+    }
+
+    static ListNode sortListCore(ListNode head, ListNode tail) {
+        if (head != tail) {
+            ListNode mid = getMidNode(head, tail);
+
+            ListNode left = sortListCore(head, mid);
+            ListNode right = sortListCore(mid.next, tail);
+
+            return mergeListNode(left, right, tail == null ? null : tail.next);
+        }
+
+        return head;
+    }
+
+    static ListNode mergeListNode(ListNode left, ListNode right, ListNode tail) {
+        ListNode res = new ListNode(0);
+        ListNode dummy = res;
+        ListNode rightCopy = right;
+        while (left != null && right != null && left != rightCopy && right != tail) {
+            if (left.val > right.val) {
+                res.next = right;
+                right = right.next;
+            } else {
+                res.next = left;
+                left = left.next;
+            }
+
+            res = res.next;
+        }
+
+        while (right != null && right != tail) {
+            res.next = right;
+            right = right.next;
+            res = res.next;
+        }
+
+        while (left != null && left != rightCopy) {
+            res.next = left;
+            left = left.next;
+            res = res.next;
+        }
+
+        return dummy.next;
+    }
+
+    public static ListNode getMidNode(ListNode head, ListNode tail) {
+        ListNode fast = head;
+        ListNode slow = head;
+        while (fast != tail && fast.next != tail) {
+            fast = fast.next.next;
+            slow = slow.next;
+        }
+
+        ListNode res = slow.next;
+        slow.next = null;
+        return res;
     }
 
     public static Node flatten(Node head) {

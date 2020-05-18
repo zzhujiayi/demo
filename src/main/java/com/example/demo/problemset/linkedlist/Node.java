@@ -1,4 +1,4 @@
-package com.example.demo.linkedlist;
+package com.example.demo.problemset.linkedlist;
 
 public class Node {
     int val;
