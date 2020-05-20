@@ -1,8 +1,11 @@
-package com.example.demo.springlean;
+package com.example.demo.springlean.controller;
 
+import com.example.demo.springlean.Log;
+import com.example.demo.springlean.Test;
 import com.netflix.hystrix.HystrixCommandGroupKey;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,6 +22,7 @@ public class MyController {
 //    @Autowired
 //    private TestB testB;
 
+    @Transactional
     @GetMapping("/say")
     public String say() {
         com.netflix.hystrix.HystrixCommand hystrixCommand=null;
