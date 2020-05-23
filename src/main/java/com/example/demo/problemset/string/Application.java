@@ -4,8 +4,50 @@ import java.util.*;
 
 public class Application {
     public static void main(String[] args) {
-        System.out.println(wordPattern("aba", "dog cat cat"));
+        String s = "a1b2";
+        letterCasePermutation(s);
+    }
 
+    public static List<String> letterCasePermutation(String S) {
+        List<String> ans = new LinkedList<>();
+        letterCasePermutationCore(S.toCharArray(), ans, 0);
+        return ans;
+    }
+
+    public static List<String> letterCasePermutationCore(char[] chars, List<String> ans, int idx) {
+        ans.add(new String(chars));
+        char c;
+        for (int i = idx; i < chars.length; i++) {
+            c = chars[i];
+            if (Character.isUpperCase(c)) {
+                char[] copy = Arrays.copyOf(chars, chars.length);
+                copy[i] = Character.toLowerCase(c);
+
+                letterCasePermutationCore(copy, ans, i + 1);
+            } else if (Character.isLetter(c)) {
+                char[] copy = Arrays.copyOf(chars, chars.length);
+                copy[i] = Character.toUpperCase(c);
+
+                letterCasePermutationCore(copy, ans, i + 1);
+            }
+        }
+
+        return ans;
+    }
+
+    public char findTheDifference(String s, String t) {
+        char[] chars1 = s.toCharArray();
+        char[] chars2 = t.toCharArray();
+        int n = 0;
+        for (char c : chars1) {
+            n ^= c;
+        }
+
+        for (char c : chars2) {
+            n ^= c;
+        }
+
+        return (char) n;
     }
 
     public static boolean wordPattern(String pattern, String str) {

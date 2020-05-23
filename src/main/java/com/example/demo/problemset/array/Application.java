@@ -7,8 +7,20 @@ import java.util.*;
 
 public class Application {
     public static void main(String[] args) {
-        int[] nums = {2,1, 0, -1};
+        int[] nums = {2, 1, 0, -1};
         System.out.println(maximumProduct(nums));
+    }
+
+    public int missingNumber(int[] nums) {
+        int max = nums.length;
+        int min = 0;
+
+        int sum = (min + max) * (max + 1) / 2;
+        for (int n : nums) {
+            sum -= n;
+        }
+
+        return sum;
     }
 
     public static int maximumProduct(int[] nums) {
