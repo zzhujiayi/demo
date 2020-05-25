@@ -4,7 +4,44 @@ import java.util.HashSet;
 
 public class Application {
     public static void main(String[] args) {
-        System.out.println(nthUglyNumber(10));
+        System.out.println(binaryGap(5));
+    }
+
+    public static int binaryGap(int N) {
+        int mask = 1;
+        int pre = 0;
+        int ans = 0;
+        for (int i = 1; i <= 32 && mask <= N; i++) {
+            if ((N & mask) != 0) {
+                if (pre != 0) {
+                    ans = Math.max(i - pre, ans);
+                }
+
+                pre = i;
+            }
+
+            mask <<= 1;
+        }
+
+        return ans;
+    }
+
+    public static int bitwiseComplement(int N) {
+        if (N == 0) {
+            return 1;
+        }
+
+        int mask = 1;
+        int ans = 0;
+        for (int i = 0; i < 32 && mask <= N; i++) {
+            if ((N & mask) == 0) {
+                ans += mask;
+            }
+
+            mask <<= 1;
+        }
+
+        return ans;
     }
 
     public int numberOfSteps(int num) {
