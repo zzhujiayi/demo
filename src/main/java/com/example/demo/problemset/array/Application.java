@@ -1,14 +1,53 @@
 package com.example.demo.problemset.array;
 
-import org.springframework.util.StringUtils;
-import org.springframework.web.servlet.DispatcherServlet;
-
 import java.util.*;
 
 public class Application {
     public static void main(String[] args) {
         int[] nums = {2, 1, 0, -1};
         System.out.println(maximumProduct(nums));
+    }
+    public int findMaxConsecutiveOnes(int[] nums) {
+        int ans = 0;
+        int cur = 0;
+        for (int n : nums) {
+            if (n == 0) {
+                cur = 0;
+                ans = Math.max(ans, cur);
+            } else {
+                cur++;
+            }
+        }
+
+        ans = Math.max(ans, cur);
+        return ans;
+    }
+
+    /**
+     * 二进制手表，亮灯数 num
+     * 小时   8 4 2 1
+     * 分钟   32 16 8 4 2 1
+     *
+     * @param num
+     * @return
+     */
+    public List<String> readBinaryWatch(int num) {
+        List<String> ans = new LinkedList<>();
+        if (num > 8) {
+            return ans;
+        }
+
+        int mask;
+        for (int i = 0; i < 3; i++) {
+            int m = num - i;
+            if (m > 5) {
+                continue;
+            }
+
+
+        }
+
+        return ans;
     }
 
     public int missingNumber(int[] nums) {
