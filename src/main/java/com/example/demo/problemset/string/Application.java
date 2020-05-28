@@ -4,8 +4,54 @@ import java.util.*;
 
 public class Application {
     public static void main(String[] args) {
-        String s = "a1b2";
-        letterCasePermutation(s);
+        char[] chars = {'a', 'b', 'c'};
+        System.out.println(compress(chars));
+    }
+
+    public static int compress(char[] chars) {
+        int ans = 0;
+        int cnt = 0;
+        char pre = '\0';
+        int preIndex = 0;
+        for (int i = 0; i < chars.length; i++) {
+            if (chars[i] == pre) {
+                cnt++;
+            } else if (cnt > 0) {
+                ans += Math.min(2, cnt);
+                chars[preIndex] = pre;
+                if (cnt > 1) {
+                    chars[preIndex + 1] = (char) (cnt + 48);
+                }
+
+                preIndex = i;
+                cnt = 1;
+                pre = chars[i];
+            }
+        }
+
+        if (cnt != 0) {
+            ans += Math.min(2, cnt);
+            chars[preIndex] = pre;
+            if (cnt > 1) {
+                chars[preIndex + 1] = (char) (cnt + 48);
+            }
+        }
+
+        return ans;
+    }
+
+    public String toLowerCase(String str) {
+        char[] chars = str.toCharArray();
+        char[] ans = new char[chars.length];
+        for (int i = 0; i < chars.length; i++) {
+            if (chars[i] >= 65 && chars[i] <= 90) {
+                ans[i] = (char) (chars[i] - 32);
+            } else {
+                ans[i] = chars[i];
+            }
+        }
+
+        return new String(ans);
     }
 
     public static List<String> letterCasePermutation(String S) {

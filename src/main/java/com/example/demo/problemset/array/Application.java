@@ -4,8 +4,57 @@ import java.util.*;
 
 public class Application {
     public static void main(String[] args) {
-        int[] nums = {2, 1, 0, -1};
-        System.out.println(maximumProduct(nums));
+        //int[] nums = {1, 2, 3, 4};
+        System.out.println(1);
+    }
+
+    public static List<List<Integer>> permute(int[] nums) {
+        List<List<Integer>> ans = new ArrayList<>();
+        ArrayList<Integer> arrayList = new ArrayList<>();
+        boolean[] used = new boolean[nums.length];
+        for (int n : nums) {
+            arrayList.add(n);
+        }
+
+
+        "".toCharArray();
+        backtrack(nums.length, arrayList, ans, used, 0);
+        return ans;
+    }
+
+    public static void backtrack(int n,
+                                 ArrayList<Integer> output,
+                                 List<List<Integer>> res,
+                                 boolean[] used,
+                                 int first) {
+        if (n == first) {
+            res.add(new ArrayList<>(output));
+            return;
+        }
+    
+        for (int i = first; i < n; i++) {
+            if (used[i]) {
+                continue;
+            }
+
+            Collections.swap(output, first, i);
+            used[i] = true;
+            backtrack(n, output, res, used, first + 1);
+            Collections.swap(output, first, i);
+        }
+    }
+
+
+    public static List<Boolean> prefixesDivBy5(int[] A) {
+        int num = 0;
+        List<Boolean> ans = new LinkedList<>();
+        for (int i = 0; i < A.length; i++) {
+            num = num * 2 + A[i];
+            num %= 5;
+            ans.add(num == 0);
+        }
+
+        return ans;
     }
     public int findMaxConsecutiveOnes(int[] nums) {
         int ans = 0;
