@@ -4,8 +4,33 @@ import java.util.*;
 
 public class Application {
     public static void main(String[] args) {
-        char[] chars = {'a', 'b', 'c'};
-        System.out.println(compress(chars));
+        String[] ans = findOcurrences("obo jvezipre obo jnvavldde jvezipre jvezipre jnvavldde jvezipre jvezipre jvezipre y jnvavldde jnvavldde obo jnvavldde jnvavldde obo jnvavldde jnvavldde jvezipre",
+                "jnvavldde", "y");
+        for (String s : ans) {
+            System.out.println(s);
+        }
+    }
+
+    public static String[] findOcurrences(String text, String first, String second) {
+        String[] textes = text.split(" ");
+        ArrayList<String> ans = new ArrayList<>();
+        int status = 0;
+
+        for (String s : textes) {
+            if (status == 2) {
+                ans.add(s);
+            }
+
+            if (s.equals(first)) {
+                status = 1;
+            } else if (status == 1 && s.equals(second)) {
+                status = 2;
+            } else {
+                status = 0;
+            }
+        }
+
+        return ans.toArray(new String[0]);
     }
 
     public static int compress(char[] chars) {
