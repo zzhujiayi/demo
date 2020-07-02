@@ -4,11 +4,91 @@ import java.util.*;
 
 public class Application {
     public static void main(String[] args) {
-        String[] ans = findOcurrences("obo jvezipre obo jnvavldde jvezipre jvezipre jnvavldde jvezipre jvezipre jvezipre y jnvavldde jnvavldde obo jnvavldde jnvavldde obo jnvavldde jnvavldde jvezipre",
-                "jnvavldde", "y");
-        for (String s : ans) {
-            System.out.println(s);
+        char[] chars = {'a', 'a', 'b', 'b', 'c', 'c', 'c'};
+        System.out.println(compress(chars));
+    }
+
+    /**
+     * 443. 压缩字符串
+     *
+     * @param chars
+     * @return
+     */
+    public static int compress(char[] chars) {
+        if (chars.length == 0) {
+            return 0;
         }
+
+        char pre = (char) 30;
+        int cnt = 0;
+        int idx = 0;
+        for (int i = 0; i < chars.length; i++) {
+            if (chars[i] == pre) {
+                cnt++;
+            } else {
+                if (cnt > 1) {
+                    for (char c : ("" + cnt).toCharArray()) {
+                        chars[idx++] = c;
+                    }
+                }
+
+                chars[idx++] = chars[i];
+                pre = chars[i];
+                cnt = 1;
+            }
+        }
+
+        if (cnt > 1) {
+            for (char c : ("" + cnt).toCharArray()) {
+                chars[idx++] = c;
+            }
+        }
+
+        return idx;
+    }
+
+    public static boolean validPalindrome(String s) {
+        return validPalindromeCore(s.toCharArray(), 0, s.length() - 1, false);
+    }
+
+    private static boolean validPalindromeCore(char[] chars, int start, int end, boolean flag) {
+        while (start < end) {
+            if (chars[start] != chars[end]) {
+                return !flag && (validPalindromeCore(chars, start + 1, end, true) || validPalindromeCore(chars, start, end - 1, true));
+            }
+
+            start++;
+            end--;
+        }
+
+        return true;
+    }
+
+
+    public boolean isPalindrome(String s) {
+        char[] chars = s.toCharArray();
+        int i = 0;
+        int j = chars.length - 1;
+        while (i < j) {
+            if (!Character.isLetterOrDigit(chars[i])) {
+                i++;
+                continue;
+            }
+
+            if (!Character.isLetterOrDigit(chars[j])) {
+                j--;
+                continue;
+            }
+
+            if (Character.toLowerCase(chars[i]) != Character.toLowerCase(chars[j])) {
+                return false;
+            }
+
+            i++;
+            j--;
+        }
+
+        return true;
     }
 
     public static String[] findOcurrences(String text, String first, String second) {
@@ -31,38 +111,6 @@ public class Application {
         }
 
         return ans.toArray(new String[0]);
-    }
-
-    public static int compress(char[] chars) {
-        int ans = 0;
-        int cnt = 0;
-        char pre = '\0';
-        int preIndex = 0;
-        for (int i = 0; i < chars.length; i++) {
-            if (chars[i] == pre) {
-                cnt++;
-            } else if (cnt > 0) {
-                ans += Math.min(2, cnt);
-                chars[preIndex] = pre;
-                if (cnt > 1) {
-                    chars[preIndex + 1] = (char) (cnt + 48);
-                }
-
-                preIndex = i;
-                cnt = 1;
-                pre = chars[i];
-            }
-        }
-
-        if (cnt != 0) {
-            ans += Math.min(2, cnt);
-            chars[preIndex] = pre;
-            if (cnt > 1) {
-                chars[preIndex + 1] = (char) (cnt + 48);
-            }
-        }
-
-        return ans;
     }
 
     public String toLowerCase(String str) {

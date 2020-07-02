@@ -1,43 +1,197 @@
 package com.example.demo.problemset.sort;
 
-import java.util.HashMap;
-import java.util.HashSet;
+import com.example.demo.problemset.linkedlist.ListNode;
+
+import java.util.*;
 
 public class Application {
     public static void main(String[] args) {
-        char[][] board = new char[9][9];
-        board[0][0] = '5';
-        board[0][1] = '3';
-        board[0][4] = '7';
-        board[1][0] = '6';
-        board[1][3] = '1';
-        board[1][4] = '9';
-        board[1][5] = '5';
-        board[2][1] = '9';
-        board[2][2] = '8';
-        board[2][7] = '6';
-        board[3][0] = '8';
-        board[3][4] = '6';
-        board[3][8] = '3';
-        board[4][0] = '4';
-        board[4][3] = '8';
-        board[4][5] = '3';
-        board[4][8] = '1';
-        board[5][0] = '7';
-        board[5][4] = '2';
-        board[5][8] = '6';
-        board[6][1] = '6';
-        board[6][6] = '2';
-        board[6][7] = '8';
-        board[7][3] = '4';
-        board[7][4] = '1';
-        board[7][5] = '9';
-        board[7][8] = '5';
-        board[8][4] = '8';
-        board[8][7] = '7';
-        board[8][8] = '9';
+        String s = "abpcplea";
+        List<String> d = new ArrayList<>();
+        d.add("ale");
+        d.add("apple");
+        d.add("monkey");
+        d.add("plea");
+        findLongestWord(s, d);
+    }
 
-        isValidSudoku(board);
+    /**
+     * @param s
+     * @param d
+     * @return
+     */
+    public static String findLongestWord(String s, List<String> d) {
+        char[] chars = s.toCharArray();
+        String ans = "";
+        char[] items;
+        int i;
+        int j;
+        for (String str : d) {
+            if (str.length() < ans.length()) {
+                continue;
+            }
+
+            items = str.toCharArray();
+            i = 0;
+            j = 0;
+            while (i < chars.length && j < items.length) {
+                if (chars[i] == items[j]) {
+                    j++;
+                }
+
+                i++;
+            }
+
+            if (j == items.length && (ans.length() == 0 || str.length() > ans.length() || ans.compareTo(str) > 0)) {
+                ans = str;
+            }
+        }
+
+        return ans;
+    }
+
+    /**
+     * 274. H 指数
+     *
+     * @param citations
+     * @return
+     */
+    public int hIndex(int[] citations) {
+        Arrays.sort(citations);
+        int ans = 0;
+        while (ans < citations.length && citations[citations.length - ans - 1] > ans) {
+            ans++;
+        }
+
+        return ans;
+    }
+
+    /**
+     * 179. 最大数
+     *
+     * @param nums
+     * @return
+     */
+    public static String largestNumber(int[] nums) {
+        String[] strs = new String[nums.length];
+        for (int i = 0; i < nums.length; i++) {
+            strs[i] = String.valueOf(nums[i]);
+        }
+
+        Arrays.sort(strs, (a, b) -> {
+            String s1 = a + b;
+            String s2 = b + a;
+            return s2.compareTo(s1);
+        });
+
+        if (strs[0].equals("0")) {
+            return "0";
+        }
+
+        StringBuilder ans = new StringBuilder();
+        for (String s : strs) {
+            ans.append(s);
+        }
+
+        return ans.toString();
+    }
+
+    /**
+     * @param head
+     * @return
+     */
+    public static ListNode insertionSortList(ListNode head) {
+        ListNode dummy = new ListNode(0);
+        ListNode next;
+        ListNode dummy0 = dummy;
+
+        while (head != null) {
+            next = head.next;
+            if (head.val < dummy0.val) {
+                dummy0 = dummy;
+            }
+
+            while (dummy0.next != null && dummy0.next.val < head.val) {
+                dummy0 = dummy0.next;
+            }
+
+            head.next = dummy0.next;
+            dummy0.next = head;
+
+            head = next;
+        }
+
+        return dummy.next;
+    }
+
+    private static void insertionSortList_core(ListNode ans, ListNode node) {
+        while (ans.next != null && ans.next.val < node.val) {
+            ans = ans.next;
+        }
+
+        node.next = ans.next;
+        ans.next = node;
+    }
+
+    /**
+     * 75. 颜色分类
+     *
+     * @param nums
+     */
+    public static void sortColors(int[] nums) {
+        int p0 = 0;
+        int p2 = nums.length - 1;
+        int cur = 0;
+        while (cur <= p2) {
+            if (nums[cur] == 0) {
+                nums[cur] = nums[p0];
+                nums[p0] = 0;
+                p0++;
+                cur++;
+            } else if (nums[cur] == 2) {
+                nums[cur] = nums[p2];
+                nums[p2] = 2;
+                p2--;
+            } else {
+                cur++;
+            }
+        }
+    }
+
+    /**
+     * 1370. 上升下降字符串
+     *
+     * @param s
+     * @return
+     */
+    public static String sortString(String s) {
+        char[] chars = s.toCharArray();
+        char[] ans = new char[s.length()];
+
+        int[] map = new int[26];
+        for (int i = 0; i < chars.length; i++) {
+            map[chars[i] - 97]++;
+        }
+
+
+        int idx = 0;
+        while (idx < chars.length) {
+            for (int i = 0; i < 26; i++) {
+                if (map[i] > 0) {
+                    ans[idx++] = (char) (i + 97);
+                    map[i]--;
+                }
+            }
+
+            for (int i = 25; i >= 0; i--) {
+                if (map[i] > 0) {
+                    ans[idx++] = (char) (i + 97);
+                    map[i]--;
+                }
+            }
+        }
+
+        return new String(ans);
     }
 
     public static boolean isValidSudoku(char[][] board) {

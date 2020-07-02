@@ -4,7 +4,62 @@ import java.util.HashSet;
 
 public class Application {
     public static void main(String[] args) {
-        System.out.println(binaryGap(5));
+        System.out.println(countPrimes(10));
+    }
+
+    /**
+     * 167. 两数之和
+     *
+     * @param numbers
+     * @param target
+     * @return
+     */
+    public int[] twoSum(int[] numbers, int target) {
+        int i = 0;
+        int j = numbers.length - 1;
+        int n;
+        while (i < j) {
+            n = numbers[i] + numbers[j];
+            if (n > target) {
+                j--;
+            } else if (n < target) {
+                i++;
+            } else {
+                break;
+            }
+        }
+
+        int[] ans = new int[2];
+        ans[0] = i + 1;
+        ans[1] = j + 1;
+        return ans;
+    }
+
+    /**
+     * 204. 计算质数
+     *
+     * @param n
+     * @return
+     */
+    public static int countPrimes(int n) {
+        if (n <= 2) {
+            return Math.max(0, n - 1);
+        }
+
+        int cnt = 1;
+        boolean[] tables = new boolean[n];
+        //2,3,5,7
+        for (int i = 3; i < n; i += 2) {
+            if (!tables[i]) {
+                for (int j = 3; i * j < n; j += 2) {
+                    tables[i * j] = true;
+                }
+
+                cnt++;
+            }
+        }
+
+        return cnt;
     }
 
     public static int binaryGap(int N) {

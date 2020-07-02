@@ -13,7 +13,7 @@ public class Application {
         root.right = new TreeNode(5);
         root.right.right = new TreeNode(6);
 
-        flatten(root);
+        TreeNode root2 = root;
     }
 
     public static void flatten(TreeNode root) {

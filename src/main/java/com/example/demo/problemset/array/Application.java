@@ -16,22 +16,16 @@ public class Application {
             arrayList.add(n);
         }
 
-
-        "".toCharArray();
         backtrack(nums.length, arrayList, ans, used, 0);
         return ans;
     }
 
-    public static void backtrack(int n,
-                                 ArrayList<Integer> output,
-                                 List<List<Integer>> res,
-                                 boolean[] used,
-                                 int first) {
+    public static void backtrack(int n, ArrayList<Integer> output, List<List<Integer>> res, boolean[] used, int first) {
         if (n == first) {
             res.add(new ArrayList<>(output));
             return;
         }
-    
+
         for (int i = first; i < n; i++) {
             if (used[i]) {
                 continue;
@@ -56,6 +50,7 @@ public class Application {
 
         return ans;
     }
+
     public int findMaxConsecutiveOnes(int[] nums) {
         int ans = 0;
         int cur = 0;

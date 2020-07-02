@@ -5,6 +5,27 @@ public class Application {
         System.out.println(hasAlternatingBits(4));
     }
 
+    public boolean isPerfectSquare(int num) {
+        if (num < 2) {
+            return true;
+        }
+
+//        int x = num / 2;
+//        while ((x * x) > num) {
+//            x = (x + (num / x)) / 2;
+//        }
+//
+//        return x * x == num;
+
+        int step = 1;
+        while (num > 0) {
+            num -= step;
+            step += 2;
+        }
+
+        return num == 0;
+    }
+
     public int findComplement(int num) {
         int mask = 1;
         int ans = 0;

@@ -8,11 +8,16 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.function.Consumer;
 
+/**
+ * 动态规划
+ */
 public class DP {
 
     public static void main(String[] args) {
         System.out.println(integerBreak(3));
     }
+                {0, 0, 0, 1, 0, 0}
+        };
 
     /**
      * 343. 整数拆分
@@ -32,8 +37,37 @@ public class DP {
 
             dp[i] = max;
         }
+         return dp[n];
+    }
 
-        return dp[n];
+    /**
+     * 63. 不同路径 II
+     *
+     * @param obstacleGrid
+     * @return
+     */
+    public static int uniquePathsWithObstacles(int[][] obstacleGrid) {
+        int[][] tables = new int[obstacleGrid.length][obstacleGrid[0].length];
+        int n = 1;
+        for (int i = obstacleGrid.length - 2; i >= 0; i--) {
+            n -= obstacleGrid[i][obstacleGrid[i].length - 1];
+            tables[i][obstacleGrid[i].length - 1] = Math.max(0, n);
+        }
+
+        n = 1;
+        for (int i = obstacleGrid[0].length - 2; i >= 0; i--) {
+            n -= obstacleGrid[obstacleGrid.length - 1][i];
+            tables[obstacleGrid.length - 1][i] = Math.max(0, n);
+        }
+
+        for (int i = obstacleGrid.length - 2; i >= 0; i--) {
+            for (int j = obstacleGrid[i].length - 2; j >= 0; j--) {
+                if (obstacleGrid[i][j] != 1) {
+                    tables[i][j] = tables[i][j + 1] + tables[i + 1][j];
+                }
+            }
+        }
+            return tables[0][0];
     }
 
     /**
@@ -276,6 +310,68 @@ public class DP {
         }
 
         return grid[0][0];
+    }
+    
+    /**
+     * 62. 不同路径
+     *
+     * @param m
+     * @param n
+     * @return
+     */
+    public static int uniquePaths(int m, int n) {
+        int[][] tables = new int[m][n];
+
+        for (int i = 0; i < m; i++) {
+            tables[i][n - 1] = 1;
+        }
+
+        for (int i = 0; i < n; i++) {
+            tables[m - 1][i] = 1;
+        }
+
+        for (int i = n - 2; i >= 0; i--) {
+            for (int j = m - 2; j >= 0; j--) {
+                tables[j][i] = tables[j + 1][i] + tables[j][i + 1];
+            }
+        }
+
+        return tables[0][0];
+    }
+
+    /**
+     * 1025. 除数博弈
+     *
+     * @param N
+     * @return
+     */
+    public boolean divisorGame(int N) {
+        return N % 2 == 0;
+    }
+
+    /**
+     * 303. 区域和检索
+     */
+    public static class NumArray {
+        private int[] sums;
+
+        public NumArray(int[] nums) {
+            sums = new int[nums.length];
+            for (int i = 0; i < nums.length; i++) {
+                sums[i] = nums[i];
+                if (i > 0) {
+                    sums[i] += sums[i - 1];
+                }
+            }
+        }
+
+        public int sumRange(int i, int j) {
+            if (i > j || i < 0 || j >= sums.length) {
+                return 0;
+            }
+
+            return i > 0 ? sums[j] - sums[i - 1] : sums[j];
+        }
     }
 
     /**
