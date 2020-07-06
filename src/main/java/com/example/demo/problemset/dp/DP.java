@@ -1,19 +1,111 @@
 package com.example.demo.problemset.dp;
 
+import com.example.demo.problemset.tree.TreeNode;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class DP {
     public static void main(String[] args) {
-//        int w = 10;
-//        int[] p = {3, 5, 5, 4, 3};
-//        int[] g = {200, 400, 500, 300, 350};
+        generateTrees(3);
+    }
 
+    /**
+     * 95. 不同的二叉搜索树 II
+     *
+     * @param n
+     * @return
+     */
+    public static List<TreeNode> generateTrees(int n) {
+        if (n < 1) {
+            return new ArrayList<>();
+        }
 
-        //System.out.println(getBest_Sec(w, g.length, p, g));
+        return generateTreesCore(1, n);
+    }
 
-        int[] arr = {17, 18, 5, 4, 6, 1};
+    private static List<TreeNode> generateTreesCore(int start, int end) {
+        List<TreeNode> result = new ArrayList<>();
+        if (start > end) {
+            result.add(null);
+            return result;
+        }
 
-        int result = arrayPairSum(arr);
-        System.out.println(result);
+        for (int i = start; i <= end; i++) {
+            List<TreeNode> lefts = generateTreesCore(start, i - 1);
+            List<TreeNode> rights = generateTreesCore(i + 1, end);
 
+            for (TreeNode left : lefts) {
+                for (TreeNode right : rights) {
+                    TreeNode node = new TreeNode(i);
+                    node.left = left;
+                    node.right = right;
+
+                    result.add(node);
+                }
+            }
+
+        }
+
+        return result;
+    }
+
+    /**
+     * 96. 不同的二叉搜索树
+     *
+     * @param n
+     * @return
+     */
+    public static int numTrees(int n) {
+        int[] ans = new int[n + 1];
+        ans[0] = 1;
+        ans[1] = 1;
+        for (int i = 2; i <= n; i++) {
+            int total = 0;
+            for (int j = 1; j <= i; j++) {
+                total += ans[j - 1] * ans[i - j];
+            }
+
+            ans[i] = total;
+        }
+
+        return ans[n];
+    }
+
+    /**
+     * 64. 最小路径和
+     *
+     * @param grid
+     * @return
+     */
+    public static int minPathSum(int[][] grid) {
+        int h = grid.length;
+        int w = grid[0].length;
+        int r;
+        int b;
+        for (int i = h - 1; i >= 0; i--) {
+            for (int j = w - 1; j >= 0; j--) {
+                if (j + 1 == w && i + 1 == h) {
+                    continue;
+                }
+
+                if (j + 1 == w) {
+                    r = Integer.MAX_VALUE;
+                } else {
+                    r = grid[i][j + 1];
+                }
+
+                if (i + 1 == h) {
+                    b = Integer.MAX_VALUE;
+                } else {
+                    b = grid[i + 1][j];
+                }
+
+                grid[i][j] = grid[i][j] + Math.min(r, b);
+            }
+        }
+
+        return grid[0][0];
     }
 
     /**
