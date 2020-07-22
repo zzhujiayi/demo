@@ -1,6 +1,7 @@
 package com.example.demo.problemset.dp;
 
 import com.example.demo.problemset.tree.TreeNode;
+import java.util.List;
 
 import java.util.*;
 import java.util.concurrent.Executors;
@@ -16,8 +17,7 @@ public class DP {
     public static void main(String[] args) {
         System.out.println(integerBreak(3));
     }
-                {0, 0, 0, 1, 0, 0}
-        };
+    }
 
     /**
      * 343. 整数拆分
@@ -38,6 +38,229 @@ public class DP {
             dp[i] = max;
         }
          return dp[n];
+    }
+    
+    public static int canCompleteCircuit(int[] gas, int[] cost) {
+        int total = 0;
+        int start = 0;
+        int cur = 0;
+        for (int i = 0; i < gas.length; i++) {
+            total += gas[i];
+            total -= cost[i];
+            cur += gas[i];
+            cur -= cost[i];
+            if (cur < 0) {
+                start = i + 1;
+                cur = 0;
+            }
+        }
+
+        return total >= 0 ? start : -1;
+    }
+
+    /**
+     * 55. 跳跃游戏
+     *
+     * @param nums
+     * @return
+     */
+    public static boolean canJump(int[] nums) {
+        int most = 0;
+        for (int i = 0; i < nums.length; i++) {
+            if (i <= most) {
+                most = Math.max(most, i + nums[i]);
+                if (most >= nums.length - 1) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * 1005. K 次取反后最大化的数组和
+     *
+     * @param A
+     * @param K
+     * @return
+     */
+    public static int largestSumAfterKNegations(int[] A, int K) {
+        int[] map = new int[201];
+        int sum = 0;
+        for (int n : A) {
+            map[n + 100]++;
+            sum += n;
+        }
+
+        int pre = 0;
+        for (int i = 0; i < map.length && K > 0; i++) {
+            for (int j = map[i]; j > 0 && K > 0; j--) {
+                if (i < 100) {
+                    pre = (100 - i) * 2;
+                    sum += pre;
+                } else {
+                    if (K % 2 == 0) {
+                        return sum;
+                    }
+
+                    if (pre > 0 && pre < (i - 100) * 2) {
+                        sum -= pre;
+                    } else {
+                        sum -= (i - 100) * 2;
+                    }
+
+                    pre = 0;
+                }
+
+                K--;
+            }
+        }
+
+        return sum;
+    }
+
+    /**
+     * 416. 分割等和子集
+     *
+     * @param nums
+     * @return
+     */
+    public boolean canPartition(int[] nums) {
+        for (int n : nums) {
+
+        }
+        return false;
+    }
+
+    /**
+     * 309. 最佳买卖股票时机含冷冻期
+     *
+     * @param prices
+     * @return
+     */
+    public static int maxProfit(int[] prices) {
+        int[][] dp = new int[prices.length][3];
+        dp[0][0] = -prices[0];
+        //0 已买入股票的最大收益，买入
+        //1 处于冷冻期的最大收益，卖出/或冷冻期
+        //2 不处于冷冻期的最大收益，可买入
+        for (int i = 1; i < prices.length; i++) {
+            dp[i][0] = Math.max(dp[i - 1][2] - prices[i], dp[i - 1][0]);
+            dp[i][1] = dp[i - 1][0] + prices[i];
+            dp[i][2] = Math.max(dp[i - 1][2], dp[i - 1][1]);
+        }
+
+        return Math.max(dp[prices.length - 1][1], dp[prices.length - 1][2]);
+    }
+
+    /**
+     * 413. 等差数列划分
+     *
+     * @param A
+     * @return
+     */
+    public static int numberOfArithmeticSlices(int[] A) {
+        if (A.length < 3) {
+            return 0;
+        }
+
+        int[] dp = new int[A.length];
+        int n = 0;
+        for (int i = 2; i < dp.length; i++) {
+            n += (i - 1);
+            dp[i] = n;
+        }
+
+        int i = 1, j = 2, count = 2, ans = 0;
+        int preDiff = A[1] - A[0];
+        while (j < A.length) {
+            if (A[j] - A[i] != preDiff) {
+                ans += dp[count - 1];
+                preDiff = A[j] - A[i];
+                count = 1;
+            }
+
+            i++;
+            j++;
+            count++;
+        }
+
+        ans += dp[count - 1];
+        return ans;
+    }
+
+    /**
+     * 91. 解码方法
+     *
+     * @param s
+     * @return
+     */
+    public static int numDecodings(String s) {
+        char[] chars = s.toCharArray();
+        int[] ans = new int[chars.length];
+        ans[0] = 1;
+        if (chars[0] == '1' || (chars[0] == '2' && chars[1] <= '6')) {
+            ans[1] = 2;
+        } else {
+            ans[1] = 1;
+        }
+
+        for (int i = 1; i < chars.length; i++) {
+            if (chars[i - 1] == '1' || (chars[i - 1] == '2' && chars[i] <= '6')) {
+                if (i - 2 > 0) {
+                    ans[i] = ans[i - 2] * 2;
+                } else {
+                    ans[i] = ans[i - 1] + 1;
+                }
+            } else {
+                ans[i] = ans[i - 1];
+            }
+        }
+
+        return ans[ans.length - 1];
+    }
+
+    private static int numDecodingsCore(char[] chars, int start) {
+        if (start >= chars.length) {
+            return 0;
+        }
+
+        int ans = 1;
+        ans += numDecodingsCore(chars, start + 1);
+        if (start + 1 < chars.length) {
+            int t = (chars[start] - 48) * 10 + chars[start + 1] - 48;
+            if (t < 27) {
+                ans++;
+                ans += numDecodingsCore(chars, start + 2);
+            }
+        }
+
+        return ans;
+    }
+
+    /**
+     * 120. 三角形最小路径和
+     *
+     * @param triangle
+     * @return
+     */
+    public int minimumTotal(List<List<Integer>> triangle) {
+        if (triangle.size() == 0) {
+            return 0;
+        }
+
+        List<Integer> list;
+        List<Integer> nextLevel;
+        for (int i = triangle.size() - 2; i >= 0; i--) {
+            list = triangle.get(i);
+            nextLevel = triangle.get(i + 1);
+            for (int j = 0; j < list.size(); j++) {
+                list.set(j, list.get(j) + Math.min(nextLevel.get(j), nextLevel.get(j + 1)));
+            }
+        }
+
+        return triangle.get(0).get(0);
     }
 
     /**
