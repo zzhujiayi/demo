@@ -1,13 +1,10 @@
 package com.example.demo.problemset.dp;
 
 import com.example.demo.problemset.tree.TreeNode;
-import java.util.List;
 
-import java.util.*;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.function.Consumer;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * 动态规划
@@ -16,7 +13,6 @@ public class DP {
 
     public static void main(String[] args) {
         System.out.println(integerBreak(3));
-    }
     }
 
     /**
@@ -37,45 +33,7 @@ public class DP {
 
             dp[i] = max;
         }
-         return dp[n];
-    }
-    
-    public static int canCompleteCircuit(int[] gas, int[] cost) {
-        int total = 0;
-        int start = 0;
-        int cur = 0;
-        for (int i = 0; i < gas.length; i++) {
-            total += gas[i];
-            total -= cost[i];
-            cur += gas[i];
-            cur -= cost[i];
-            if (cur < 0) {
-                start = i + 1;
-                cur = 0;
-            }
-        }
-
-        return total >= 0 ? start : -1;
-    }
-
-    /**
-     * 55. 跳跃游戏
-     *
-     * @param nums
-     * @return
-     */
-    public static boolean canJump(int[] nums) {
-        int most = 0;
-        for (int i = 0; i < nums.length; i++) {
-            if (i <= most) {
-                most = Math.max(most, i + nums[i]);
-                if (most >= nums.length - 1) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
+        return dp[n];
     }
 
     /**
@@ -290,7 +248,7 @@ public class DP {
                 }
             }
         }
-            return tables[0][0];
+        return tables[0][0];
     }
 
     /**
@@ -534,7 +492,7 @@ public class DP {
 
         return grid[0][0];
     }
-    
+
     /**
      * 62. 不同路径
      *

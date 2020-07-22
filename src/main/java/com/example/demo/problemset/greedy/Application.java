@@ -5,16 +5,57 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Arrays;
-import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * 贪心算法
  */
 public class Application {
     public static void main(String[] args) {
-        int[] bills = {5, 5, 5, 10, 20};
-        lemonadeChange(bills);
-        ReentrantLock
+    }
+
+    /**
+     * 134. 加油站
+     *
+     * @param gas
+     * @param cost
+     * @return
+     */
+    public static int canCompleteCircuit(int[] gas, int[] cost) {
+        int total = 0;
+        int start = 0;
+        int cur = 0;
+        for (int i = 0; i < gas.length; i++) {
+            total += gas[i];
+            total -= cost[i];
+            cur += gas[i];
+            cur -= cost[i];
+            if (cur < 0) {
+                start = i + 1;
+                cur = 0;
+            }
+        }
+
+        return total >= 0 ? start : -1;
+    }
+
+    /**
+     * 55. 跳跃游戏
+     *
+     * @param nums
+     * @return
+     */
+    public static boolean canJump(int[] nums) {
+        int most = 0;
+        for (int i = 0; i < nums.length; i++) {
+            if (i <= most) {
+                most = Math.max(most, i + nums[i]);
+                if (most >= nums.length - 1) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     public int count(String filename, String str) throws IOException {
@@ -36,28 +77,6 @@ public class Application {
         }
 
         return count;
-    }
-
-    /**
-     * 134. 加油站
-     *
-     * @param gas
-     * @param cost
-     * @return
-     */
-    public int canCompleteCircuit(int[] gas, int[] cost) {
-        for (int i = 0; i < gas.length; i++) {
-            int j = i;
-            while (j != i) {
-
-                j++;
-                if (j > gas.length) {
-                    j %= gas.length;
-                }
-            }
-        }
-
-        return 0;
     }
 
     /**
