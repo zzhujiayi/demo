@@ -2,13 +2,183 @@ package com.example.demo.problemset.dp;
 
 import com.example.demo.problemset.tree.TreeNode;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.function.Consumer;
 
 public class DP {
+
     public static void main(String[] args) {
-        generateTrees(3);
+        System.out.println(integerBreak(3));
     }
+
+    /**
+     * 343. 整数拆分
+     *
+     * @param n
+     * @return
+     */
+    public static int integerBreak(int n) {
+        int[] dp = new int[n + 1];
+        dp[1] = 1;
+        dp[2] = 1;
+        for (int i = 3; i <= n; i++) {
+            int max = 0;
+            for (int j = i - 2; j > 0; j--) {
+                max = Math.max(Math.max(max, dp[j] * (i - j)), j * (i - j));
+            }
+
+            dp[i] = max;
+        }
+
+        return dp[n];
+    }
+
+    /**
+     * 279. 完全平方数
+     *
+     * @param n
+     * @return
+     */
+    public static int numSquares(int n) {
+        int[] dp = new int[n + 1];
+        Arrays.fill(dp, Integer.MAX_VALUE);
+        dp[0] = 0;
+        int[] sqrts = new int[((int) Math.sqrt(n)) + 1];
+        for (int i = 1; i < sqrts.length; i++) {
+            sqrts[i] = i * i;
+        }
+
+        for (int i = 1; i <= n; i++) {
+            ;
+            for (int j = 1; j < sqrts.length; j++) {
+                if (i < sqrts[j]) {
+                    break;
+                }
+
+                dp[i] = Math.min(dp[i], dp[i - sqrts[j]] + 1);
+            }
+        }
+
+        return dp[n];
+    }
+
+    /**
+     * @param nums
+     * @return
+     */
+    public static int lengthOfLIS(int[] nums) {
+        //[10,9,2,5,3,7,101,18]
+        int[] ans = new int[nums.length];
+        int cur;
+        int max = 0;
+        for (int i = 0; i < nums.length; i++) {
+            cur = 0;
+            for (int j = 0; j < i; j++) {
+                if (nums[i] > nums[j]) {
+                    cur = Math.max(ans[j], cur);
+                }
+            }
+
+            ans[i] = cur + 1;
+            max = Math.max(ans[i], max);
+        }
+
+        return max;
+    }
+
+    /**
+     * 338. 比特位计数
+     *
+     * @param num
+     * @return
+     */
+    public static int[] countBits(int num) {
+        int[] ans = new int[num + 1];
+        int temp = 0;
+        int next = 1;
+        for (int i = 1; i <= num; i++) {
+            if (i >= next) {
+                temp = next;
+                next <<= 1;
+            }
+
+            if (temp == i) {
+                ans[i] = 1;
+                continue;
+            }
+
+            ans[i] = ans[i - temp] + 1;
+        }
+
+        return ans;
+    }
+
+    /**
+     * 213. 打家劫舍 II
+     *
+     * @param nums
+     * @return
+     */
+    public static int rob(int[] nums) {
+        if (nums.length == 0) {
+            return 0;
+        }
+
+        if (nums.length == 1) {
+            return nums[0];
+        }
+
+        return Math.max(robCore(nums, 0, nums.length - 1), robCore(nums, 1, nums.length));
+    }
+
+    private static int robCore(int[] nums, int start, int end) {
+        int cur = 0;
+        int pre = 0;
+        int temp;
+        //pre cur
+        //0,  0,  1,2,10,2,3,10
+        for (int i = start; i < end; i++) {
+            temp = cur;
+            cur = Math.max(pre + nums[i], cur);
+            pre = temp;
+        }
+
+        return cur;
+    }
+
+    /**
+     * 264. 丑数 II
+     *
+     * @param n
+     * @return
+     */
+    public static int nthUglyNumber(int n) {
+        int[] ans = new int[n];
+        ans[0] = 1;
+        int i2 = 0;
+        int i3 = 0;
+        int i5 = 0;
+        int ugly;
+        for (int i = 1; i < n; i++) {
+            ugly = Math.min(Math.min(ans[i2] * 2, ans[i3] * 3), ans[i5] * 5);
+            ans[i] = ugly;
+            if (ans[i2] * 2 == ugly) {
+                i2++;
+            }
+            if (ans[i3] * 3 == ugly) {
+                i3++;
+            }
+            if (ans[i5] * 5 == ugly) {
+                i5++;
+            }
+        }
+
+        return ans[n - 1];
+    }
+
 
     /**
      * 95. 不同的二叉搜索树 II
