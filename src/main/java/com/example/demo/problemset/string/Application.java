@@ -4,8 +4,45 @@ import java.util.*;
 
 public class Application {
     public static void main(String[] args) {
-        char[] chars = {'a', 'a', 'b', 'b', 'c', 'c', 'c'};
-        System.out.println(compress(chars));
+        System.out.println(minNumberOfFrogs("aoocrrackk"));
+    }
+
+    /**
+     * 1419. 数青蛙
+     *
+     * @param croakOfFrogs
+     * @return
+     */
+    public static int minNumberOfFrogs(String croakOfFrogs) {
+        if (croakOfFrogs.length() % 5 != 0) {
+            return -1;
+        }
+
+        int ans = -1;
+        int c = 0;
+        int r = 0;
+        int o = 0;
+        int a = 0;
+        int k = 0;
+        for (char cc : croakOfFrogs.toCharArray()) {
+            if (cc == 'c') c++;
+            if (cc == 'r') r++;
+            if (cc == 'o') o++;
+            if (cc == 'a') a++;
+            if (cc == 'k') {
+                ans = Math.max(c, ans);
+                c--;
+                r--;
+                o--;
+                a--;
+            }
+
+            if (c < r || r < o || o < a || a < k) {
+                return -1;
+            }
+        }
+
+        return ans;
     }
 
     /**

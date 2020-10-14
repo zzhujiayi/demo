@@ -12,8 +12,54 @@ import java.util.List;
 public class DP {
 
     public static void main(String[] args) {
-        System.out.println(integerBreak(3));
+        champagneTower(5, 3, 1);
     }
+
+    /**
+     * 799. 香槟塔
+     *
+     * @param poured      倾倒香槟总杯数
+     * @param query_row   行数
+     * @param query_glass 杯子的位置数
+     * @return
+     */
+    public static double champagneTower(int poured, int query_row, int query_glass) {
+        double[][] towers = new double[101][101];
+        towers[0][0] = poured;
+        for (int i = 0; i <= query_row; i++) {
+            for (int j = 0; j <= i; j++) {
+                if (towers[i][j] <= 1) {
+                    continue;
+                }
+
+                double overflow = towers[i][j] - 1;
+                double half = overflow / 2;
+                towers[i + 1][j] += half;
+                towers[i + 1][j + 1] += half;
+            }
+        }
+
+        return Math.min(1, towers[query_row][query_glass]);
+    }
+
+    private static void champagneTowerCore(double[][] towers, int i, int j, double add) {
+        if (towers.length <= i) {
+            return;
+        }
+
+        towers[i][j] += add;
+        double size = towers[i][j];
+        if (size <= 1) {
+            return;
+        }
+
+        double overflow = size - 1;
+        towers[i][j] = 1;
+        double half = overflow / 2;
+        champagneTowerCore(towers, i + 1, j, half);
+        champagneTowerCore(towers, i + 1, j + 1, half);
+    }
+
 
     /**
      * 343. 整数拆分

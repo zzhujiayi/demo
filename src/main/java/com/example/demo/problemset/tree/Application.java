@@ -1,20 +1,100 @@
 package com.example.demo.problemset.tree;
 
+import com.example.demo.problemset.linkedlist.ListNode;
+
 import java.util.*;
 
 public class Application {
     private int intAns;
 
     public static void main(String[] args) {
-        TreeNode root = new TreeNode(1);
-        root.left = new TreeNode(2);
-        root.left.left = new TreeNode(3);
-        root.left.right = new TreeNode(4);
-        root.right = new TreeNode(5);
-        root.right.right = new TreeNode(6);
-
-        TreeNode root2 = root;
+        //[-10,-3,0,5,9]
+        getAllElements(null, null);
     }
+
+    /**
+     * 1305. 两棵二叉搜索树中的所有元素
+     *
+     * @param root1
+     * @param root2
+     * @return
+     */
+    public static List<Integer> getAllElements(TreeNode root1, TreeNode root2) {
+        List<Integer> list1 = new ArrayList<>();
+        List<Integer> list2 = new ArrayList<>();
+        List<Integer> ans = new ArrayList<>();
+        //inorder(root1, list1);
+        //inorder(root2, list2);
+        list1.add(1);
+        list1.add(2);
+        list1.add(4);
+        list2.add(0);
+        list2.add(1);
+        list2.add(3);
+        int i = 0;
+        int j = 0;
+        while (i < list1.size() || j < list2.size()) {
+            if (i < list1.size() && j < list2.size()) {
+                if (list1.get(i) < list2.get(j)) {
+                    ans.add(list1.get(i));
+                    i++;
+                } else {
+                    ans.add(list2.get(j));
+                    j++;
+                }
+            } else if (i < list1.size()) {
+                ans.add(list1.get(i));
+                i++;
+            } else {
+                ans.add(list2.get(j));
+                j++;
+            }
+        }
+
+        return ans;
+    }
+
+    private static void inorder(TreeNode node, List<Integer> list) {
+        if (node == null) {
+            return;
+        }
+
+        inorder(node.left, list);
+        list.add(node.val);
+        inorder(node.right, list);
+    }
+
+    /**
+     * 109. 有序链表转换二叉搜索树
+     *
+     * @param head
+     * @return
+     */
+    public static TreeNode sortedListToBST(ListNode head) {
+        return sortedListToBSTHelper(head, null);
+    }
+
+    private static TreeNode sortedListToBSTHelper(ListNode head, ListNode tail) {
+        if (head == tail) {
+            return null;
+        }
+
+        ListNode slow = head;
+        ListNode fast = head;
+        while (fast != tail && fast.next != tail) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+
+        TreeNode node = new TreeNode(slow.val);
+        if (slow != fast) {
+            node.left = sortedListToBSTHelper(head, slow);
+            node.right = sortedListToBSTHelper(slow.next, tail);
+        }
+
+        return node;
+    }
+
 
     public static void flatten(TreeNode root) {
         if (root == null) {
