@@ -2,7 +2,25 @@ package com.example.demo.problemset.binary;
 
 public class Application {
     public static void main(String[] args) {
-        System.out.println(hasAlternatingBits(4));
+        hammingDistance(4, 1);
+    }
+
+    /**
+     * 461. 汉明距离
+     *
+     * @param x
+     * @param y
+     * @return
+     */
+    public static int hammingDistance(int x, int y) {
+        int dif = x ^ y;
+        int ans = 0;
+        while (dif > 0) {
+            ans += dif & 1;
+            dif >>= 1;
+        }
+
+        return ans;
     }
 
     public boolean isPerfectSquare(int num) {

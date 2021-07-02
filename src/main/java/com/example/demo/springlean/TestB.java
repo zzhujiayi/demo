@@ -2,8 +2,6 @@ package com.example.demo.springlean;
 
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.AutoConfigureOrder;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 @Data
@@ -12,7 +10,7 @@ import org.springframework.stereotype.Component;
 public class TestB {
 
     @Autowired
-    private Test  test;
+    private Test test;
 
     private int i = 0;
 

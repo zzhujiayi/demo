@@ -18,7 +18,7 @@ public class Application {
     public static void main(String[] args) throws Exception, RemotingException, MQClientException, InterruptedException, MQBrokerException {
         try {
             DefaultMQProducer producer = new DefaultMQProducer("group1");
-            producer.setNamesrvAddr("http://172.18.127.4:9876");
+            producer.setNamesrvAddr("http://172.21.128.8:9876");
             producer.start();
             Message msg = new Message("TopicTest" /* Topic */,
                     "TagA" /* Tag */,

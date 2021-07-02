@@ -13,6 +13,38 @@ public class Application {
     }
 
     /**
+     * 1302. 层数最深叶子节点的和
+     *
+     * @param root
+     * @return
+     */
+    public int deepestLeavesSum(TreeNode root) {
+        deepestLeavesSum_dst(root, 0);
+        return total;
+    }
+
+    int depth = 0;
+
+    private void deepestLeavesSum_dst(TreeNode node, int d) {
+        if (node == null) {
+            return;
+        }
+
+        deepestLeavesSum_dst(node.left, d + 1);
+
+        if (d > depth) {
+            depth = d;
+            total = 0;
+        }
+
+        if (d == depth) {
+            total += node.val;
+        }
+
+        deepestLeavesSum_dst(node.right, d + 1);
+    }
+
+    /**
      * 1305. 两棵二叉搜索树中的所有元素
      *
      * @param root1

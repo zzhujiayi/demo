@@ -4,7 +4,140 @@ import java.util.*;
 
 public class Application {
     public static void main(String[] args) {
-        System.out.println(minNumberOfFrogs("aoocrrackk"));
+        String first = "a";
+        String second = "a";
+        System.out.println(oneEditAway(first, second));
+    }
+
+    /**
+     * 面试题 01.05. 一次编辑
+     *
+     * @param first
+     * @param second
+     * @return
+     */
+    public static boolean oneEditAway(String first, String second) {
+        if (Math.abs(first.length() - second.length()) > 1) {
+            return false;
+        }
+
+        int max = Math.max(first.length(), second.length());
+        int match = 0;
+        for (int i = 0; i < Math.min(first.length(), second.length()); i++) {
+            if (first.charAt(i) == second.charAt(i)) {
+                match++;
+            } else {
+                break;
+            }
+        }
+
+        int i = first.length() - 1;
+        int j = second.length() - 1;
+        int skipFront = match;
+        while (i >= skipFront && j >= skipFront) {
+            if (first.charAt(i) == second.charAt(j)) {
+                match++;
+            } else {
+                break;
+            }
+
+            i--;
+            j--;
+        }
+
+        return match == max || match == (max - 1);
+    }
+
+    /**
+     * 1566. 重复至少 K 次且长度为 M 的模式
+     *
+     * @param arr
+     * @param m
+     * @param k
+     * @return
+     */
+    public static boolean containsPattern(int[] arr, int m, int k) {
+        int len = m * k;
+        if (len > arr.length) {
+            return false;
+        }
+
+        int offset;
+        for (int i = 0; i + len <= arr.length; i++) {
+            for (offset = 0; offset < len; offset++) {
+                if (arr[offset + i] != arr[i + offset * m]) {
+                    break;
+                }
+            }
+
+            if (offset == len) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * 696. 计数二进制子串
+     *
+     * @param s
+     * @return
+     */
+    public static int countBinarySubstrings(String s) {
+        int i = 0;
+        int len = s.length();
+        int ans = 0;
+        int pre = 0;
+        while (i < len) {
+            char c = s.charAt(i);
+            int count = 0;
+            while (i < len && c == s.charAt(i)) {
+                count++;
+                i++;
+            }
+
+            ans += Math.min(pre, count);
+            pre = count;
+        }
+
+        return ans;
+    }
+
+    /**
+     * 1002. 查找常用字符
+     *
+     * @param A
+     * @return
+     */
+    public static List<String> commonChars(String[] A) {
+        int[] ans = null;
+        for (String s : A) {
+            int[] map = new int[26];
+            for (char c : s.toCharArray()) {
+                map[c - 97]++;
+            }
+
+            if (ans == null) {
+                ans = map;
+            } else {
+                for (int i = 0; i < map.length; i++) {
+                    ans[i] = Math.min(ans[i], map[i]);
+                }
+            }
+        }
+
+        List<String> list = new ArrayList<>();
+        for (int i = 0; i < ans.length; i++) {
+            if (ans[i] > 0) {
+                while (ans[i] > 0) {
+                    list.add(String.valueOf((char) (i + 97)));
+                    ans[i]--;
+                }
+            }
+        }
+
+        return list;
     }
 
     /**
