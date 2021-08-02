@@ -14,6 +14,33 @@ public class Application {
     }
 
     /**
+     * 128. 最长连续序列
+     *
+     * @param nums
+     * @return
+     */
+    public int longestConsecutive(int[] nums) {
+        HashSet<Integer> set = new HashSet<>();
+        for (int n : nums) {
+            set.add(n);
+        }
+
+        int ans = 1;
+        for (int n : nums) {
+            if (!set.contains(n - 1)) {
+                int len = 1;
+                while (set.contains(n++)) {
+                    len++;
+                }
+
+                ans = Math.max(ans, len);
+            }
+        }
+
+        return ans;
+    }
+
+    /**
      * 48. 旋转图像
      *
      * @param matrix

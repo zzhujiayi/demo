@@ -2,36 +2,110 @@ package com.example.demo.problemset.linkedlist;
 
 import com.example.demo.problemset.tree.TreeNode;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.concurrent.locks.LockSupport;
 
 public class Application {
     public static void main(String[] args) {
-        ListNode listNode = new ListNode(-1);
-        listNode.next = new ListNode(5);
-        listNode.next.next = new ListNode(3);
-        listNode.next.next.next = new ListNode(4);
-        listNode.next.next.next.next = new ListNode(0);
-        listNode.next.next.next.next.next = new ListNode(9);
-        listNode.next.next.next.next.next.next = new ListNode(3);
-        listNode.next.next.next.next.next.next.next = new ListNode(2);
+        ListNode listNode = new ListNode(1);
+        listNode.next = new ListNode(4);
+        listNode.next.next = new ListNode(5);
 
-        ListNode res = sortList(listNode);
-        while (res != null) {
-            System.out.println(res.val);
-            res = res.next;
-        }
+
+        ListNode listNode2 = new ListNode(1);
+        listNode2.next = new ListNode(3);
+        listNode2.next.next = new ListNode(4);
+
+
+        ListNode listNode3 = new ListNode(2);
+        listNode3.next = new ListNode(6);
+        listNode3.next.next = new ListNode(30);
+
+        ListNode listNode4 = new ListNode(2);
+        listNode4.next = new ListNode(3);
+        listNode4.next.next = new ListNode(4);
+        listNode4.next.next.next = new ListNode(6);
+        listNode4.next.next.next.next = new ListNode(9);
+        listNode4.next.next.next.next.next = new ListNode(14);
+        listNode4.next.next.next.next.next.next = new ListNode(18);
+        listNode4.next.next.next.next.next.next.next = new ListNode(19);
+        listNode4.next.next.next.next.next.next.next.next = new ListNode(22);
+
+        ListNode[] lists = {listNode, listNode2, listNode3, listNode4};
+
+        Application application = new Application();
+        application.mergeKLists(lists);
+
+
     }
 
     public ListNode mergeKLists(ListNode[] lists) {
-        ListNode listNode=new ListNode(0);
-        for (int i = 0; i < lists.length; i += 2) {
+        ListNode dummy = new ListNode(0);
+        ListNode parent = dummy;
+        //移动空链表到数组末尾
+        int size = lists.length - 1;
+        int left = 0;
+        int right = size;
+        while (left < right) {
+            while (left < lists.length && lists[left] != null) {
+                left++;
+            }
 
+            while (right >= 0 && lists[right] == null) {
+                right--;
+            }
+
+            if (left < right) {
+                lists[left] = lists[right];
+                lists[right] = null;
+                size--;
+            }
         }
 
-        return listNode.next;
+        size = right;
+
+        //构建小顶堆
+        while (size >= 0) {
+            up(lists, size);
+            parent.next = lists[0];
+            parent = parent.next;
+
+            if (lists[0] != null) {
+                lists[0] = lists[0].next;
+                parent.next = null;
+            }
+
+            if (lists[0] == null) {
+                lists[0] = lists[size];
+                lists[size] = null;
+                size--;
+            }
+        }
+
+        return dummy.next;
+    }
+
+    /**
+     * 上浮头部元素小的链表
+     *
+     * @param lists
+     * @param size
+     */
+    private void up(ListNode[] lists, int size) {
+        int lastParentNode = size / 2;
+        for (int i = lastParentNode; i >= 0; i--) {
+            int minChildIndex = i * 2 + 1;
+            if (size >= minChildIndex + 1 && lists[minChildIndex + 1].val < lists[minChildIndex].val) {
+                minChildIndex++;
+            }
+
+            if (size >= minChildIndex && lists[minChildIndex].val < lists[i].val) {
+                ListNode temp = lists[minChildIndex];
+                lists[minChildIndex] = lists[i];
+                lists[i] = temp;
+            }
+        }
     }
 
     public static ListNode sortList(ListNode head) {

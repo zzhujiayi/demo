@@ -1,7 +1,5 @@
 package com.example.demo.problemset.backtracking;
 
-import reactor.core.Fuseable;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -12,7 +10,100 @@ import java.util.List;
  */
 public class Application {
     public static void main(String[] args) {
-        System.out.println(countArrangement(4));
+        Application application = new Application();
+
+        int[] nusm = {3,4,5,6,7,8};
+        System.out.println(application.subsetXORSum(nusm));
+    }
+
+    /**
+     * 1863. 找出所有子集的异或总和再求和
+     *
+     * @param nums
+     * @return
+     */
+    public int subsetXORSum(int[] nums) {
+        return subsetXORSum_dfs(nums, 0, 0);
+    }
+
+    private int subsetXORSum_dfs(int[] nums, int sum, int start) {
+        int ans = sum;
+        for (int i = start; i < nums.length; i++) {
+            ans += subsetXORSum_dfs(nums, sum^nums[i], i + 1);
+        }
+
+        return ans;
+    }
+
+    /**
+     * 401. 二进制手表
+     *
+     * @param turnedOn
+     * @return
+     */
+    public static List<String> readBinaryWatch(int turnedOn) {
+        int[] times = {8, 4, 2, 1, 32, 16, 8, 4, 2, 1};
+        List<String> ans = new ArrayList<>();
+        readBinaryWatch_dfs(times, ans, new int[times.length], 0, turnedOn);
+
+        return ans;
+    }
+
+    private static void readBinaryWatch_dfs(int[] times, List<String> ans, int[] cur, int i, int turnedOn) {
+        int hour = cur[0] + cur[1] + cur[2] + cur[3];
+        int minute = cur[4] + cur[5] + cur[6] + cur[7] + cur[8] + cur[9];
+        if (turnedOn == 0) {
+            ans.add(hour + ":" + (minute < 10 ? "0" : "") + minute);
+            return;
+        }
+
+        for (int j = i; j < times.length; j++) {
+            if ((j < 4 && hour + times[j] > 11) || (j > 3 && minute + times[j] > 59)) {
+                continue;
+            }
+
+            cur[j] = times[j];
+            readBinaryWatch_dfs(times, ans, cur, j + 1, turnedOn - 1);
+            cur[j] = 0;
+        }
+    }
+
+    /**
+     * 79. 单词搜索
+     *
+     * @param board
+     * @param word
+     * @return
+     */
+    public static boolean exist(char[][] board, String word) {
+        boolean[][] used = new boolean[board.length][board[0].length];
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[i].length; j++) {
+                if (exist_dfs(board, word, used, i, j, 0)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private static boolean exist_dfs(char[][] board, String word, boolean[][] used, int x, int y, int n) {
+        if (used[x][y] || board[x][y] != word.charAt(n)) {
+            return false;
+        } else if (n == word.length() - 1) {
+            return true;
+        }
+
+        used[x][y] = true;
+        n++;
+
+        boolean result = ((x + 1) < board.length && exist_dfs(board, word, used, x + 1, y, n))
+                || ((x - 1) >= 0 && exist_dfs(board, word, used, x - 1, y, n))
+                || ((y + 1) < board[x].length && exist_dfs(board, word, used, x, y + 1, n))
+                || ((y - 1) >= 0 && exist_dfs(board, word, used, x, y - 1, n));
+        used[x][y] = false;
+        return result;
     }
 
     /**

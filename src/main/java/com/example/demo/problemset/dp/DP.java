@@ -12,7 +12,46 @@ import java.util.List;
 public class DP {
 
     public static void main(String[] args) {
-        champagneTower(5, 3, 1);
+        DP dp = new DP();
+        dp.fib(45);
+    }
+
+    public int fib(int n) {
+        int a = 0;
+        int b = 1;
+        int sum;
+        for (int i = 0; i < n; i++) {
+            sum = (a + b) % 1000000007;
+            a = b;
+            b = sum;
+        }
+
+        return a;
+    }
+
+    /**
+     * 45. 跳跃游戏 II
+     *
+     * @param nums
+     * @return
+     */
+    public int jump(int[] nums) {
+        int maxPosition = 0;
+        int ans = 0;
+        int end = 0;
+        for (int i = 0; i < nums.length - 1; i++) {
+            if (nums[i] + i > maxPosition) {
+                maxPosition = nums[i] + i;
+            }
+
+            if (i == end) {
+                //更新边界
+                end = maxPosition;
+                ans++;
+            }
+        }
+
+        return ans;
     }
 
     /**
@@ -767,9 +806,7 @@ public class DP {
                 t = nums[i];
                 nums[i] = nums[mark];
                 nums[mark] = t;
-
             }
-
         }
 
         t = nums[mark];

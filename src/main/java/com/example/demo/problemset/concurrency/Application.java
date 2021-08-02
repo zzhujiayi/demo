@@ -12,6 +12,8 @@ public class Application {
             this.n = n;
         }
 
+
+
         static CountDownLatch countDownLatch = new CountDownLatch(1);
         ReentrantLock reentrantLock = new ReentrantLock();
         Condition condition1 = reentrantLock.newCondition();
@@ -78,5 +80,8 @@ public class Application {
         thread2.start();
 
         //System.out.println("over.");
+
+        ConcurrentHashMap concurrentHashMap=new ConcurrentHashMap();
+        concurrentHashMap.put("","");
     }
 }
