@@ -1,5 +1,6 @@
 package com.example.demo.kafka;
 
+import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.MockProducer;
@@ -29,7 +30,11 @@ public class Application {
         kafkaProducer.abortTransaction();
 
 
-        KafkaConsumer<String,String> kafkaConsumer=null;
+        KafkaConsumer<String,String> kafkaConsumer=new KafkaConsumer<String, String>(props);
+        final ConsumerRecords<String, String> poll = kafkaConsumer.poll(300);
+        poll.records("").forEach(c->{
+
+        });
         kafkaConsumer.commitSync();
     }
 }

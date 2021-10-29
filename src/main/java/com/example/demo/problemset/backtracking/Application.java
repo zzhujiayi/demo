@@ -12,8 +12,70 @@ public class Application {
     public static void main(String[] args) {
         Application application = new Application();
 
-        int[] nusm = {3,4,5,6,7,8};
-        System.out.println(application.subsetXORSum(nusm));
+        char[][] grid = {
+                {'1', '1', '1', '0', '0'},
+                {'1', '1', '0', '1', '0'},
+                {'1', '1', '0', '0', '0'},
+                {'0', '0', '0', '0', '0'}
+        };
+
+        int[] nums = {1, 1, 1, 1, 1};
+        System.out.println(application.findTargetSumWays(nums, 3));
+    }
+
+    /**
+     * 494. 目标和
+     *
+     * @param nums
+     * @param target
+     * @return
+     */
+    public int findTargetSumWays(int[] nums, int target) {
+        return findTargetSumWays_dfs(nums, 0, target);
+    }
+
+    private int findTargetSumWays_dfs(int[] nums, int i, int target) {
+        if (i >= nums.length) {
+            return target == 0 ? 1 : 0;
+        }
+
+        int n = nums[i];
+        return findTargetSumWays_dfs(nums, i + 1, target + n)
+                + findTargetSumWays_dfs(nums, i + 1, target - n);
+    }
+
+    /**
+     * 最大岛屿数量
+     *
+     * @param grid
+     * @return
+     */
+    public int numIslands(char[][] grid) {
+        int m = grid.length;
+        int n = grid[0].length;
+        int ans = 0;
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (grid[i][j] == '1') {
+                    diffuse(grid, i, j, m, n);
+                    ans++;
+                }
+            }
+        }
+
+        return ans;
+    }
+
+    private void diffuse(char[][] grid, int i, int j, int m, int n) {
+        if (i < 0 || j < 0 || i >= m || j >= n || grid[i][j] == '0') {
+            return;
+        }
+
+        grid[i][j] = '0';
+        diffuse(grid, i - 1, j, m, n);
+        diffuse(grid, i + 1, j, m, n);
+        diffuse(grid, i, j - 1, m, n);
+        diffuse(grid, i, j + 1, m, n);
     }
 
     /**
@@ -29,7 +91,7 @@ public class Application {
     private int subsetXORSum_dfs(int[] nums, int sum, int start) {
         int ans = sum;
         for (int i = start; i < nums.length; i++) {
-            ans += subsetXORSum_dfs(nums, sum^nums[i], i + 1);
+            ans += subsetXORSum_dfs(nums, sum ^ nums[i], i + 1);
         }
 
         return ans;

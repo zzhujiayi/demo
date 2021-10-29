@@ -1,4 +1,4 @@
-package com.example.demo.springlean;
+package com.example.demo.spring;
 
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;

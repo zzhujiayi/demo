@@ -1,4 +1,4 @@
-package com.example.demo.springlean;
+package com.example.demo.spring;
 
 
 import java.lang.annotation.Retention;

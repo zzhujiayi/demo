@@ -4,13 +4,153 @@ import java.util.*;
 
 public class Application {
     public static void main(String[] args) {
-        int[][] matrix =
-                {
-                        {1, 2, 3},
-                        {4, 5, 6},
-                        {7, 8, 9}
-                };
-        rotate(matrix);
+        Application application = new Application();
+
+//        int[][] matrix =
+//                {
+//                        {1, 3, 5, 7, 9},
+//                        {2, 4, 6, 8, 10},
+//                        {11, 13, 15, 17, 19},
+//                        {12, 14, 16, 18, 20},
+//                        {21, 23, 25, 27, 29}
+//                };
+//        System.out.println(application.findNumberIn2DArray(matrix, 0));
+
+        int[] nums = {0, 0, 0, 0, 0, 0, 0, 0, 0};
+        System.out.println(application.search(nums, 0));
+    }
+
+    /**
+     * 1337. 矩阵中战斗力最弱的 K 行
+     *
+     * @param mat
+     * @param k
+     * @return
+     */
+    public int[] kWeakestRows(int[][] mat, int k) {
+
+
+        return null;
+    }
+
+    /**
+     * 81. 搜索旋转排序数组 II
+     *
+     * @param nums
+     * @param target
+     * @return
+     */
+    public boolean search(int[] nums, int target) {
+        if (nums.length == 0) {
+            return false;
+        }
+
+        if (nums.length == 1) {
+            return nums[0] == target;
+        }
+
+        int l = 0;
+        int r = nums.length - 1;
+        while (l <= r) {
+            int mid = (l + r) / 2;
+            if (nums[mid] == target) {
+                return true;
+            }
+
+            if (nums[l] == nums[mid] && nums[mid] == nums[r]) {
+                l++;
+                r--;
+            } else if (nums[mid] >= nums[l]) {
+                //左边有序
+                if (nums[mid] > target && target >= nums[l]) {
+                    r = mid - 1;
+                } else {
+                    l = mid + 1;
+                }
+            } else {
+                //右边有序
+                if (nums[r] >= target && target > nums[mid]) {
+                    l = mid + 1;
+                } else {
+                    r = mid - 1;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    public boolean search(int[] nums, int target, int start, int end) {
+        if (start > end) {
+            return false;
+        }
+
+        if (nums[start] == target) {
+            return true;
+        }
+
+        int mid = (start + end) / 2;
+        if (nums[mid] >= nums[start] && nums[start] <= target && target <= nums[mid]) {
+            return search(nums, target, start, mid);
+        } else if (nums[mid] >= nums[start] && nums[mid] >= target && nums[start] > target) {
+            return search(nums, target, mid, end);
+        } else if (nums[end] >= nums[mid] && nums[mid] >= target) {
+            return search(nums, target, mid, end);
+        } else {
+            return search(nums, target, start, mid);
+        }
+    }
+
+    public int searchMinIndex(int[] nums, int start, int end) {
+        if (nums[end] >= nums[start]) {
+            return start;
+        }
+
+        int mid = (start + end) / 2;
+        if (nums[mid] >= nums[start]) {
+            return searchMinIndex(nums, start, mid);
+        } else {
+            return searchMinIndex(nums, mid + 1, end);
+        }
+    }
+
+    /**
+     * 剑指 Offer 04. 二维数组中的查找
+     *
+     * @param matrix
+     * @param target
+     * @return
+     */
+    public boolean findNumberIn2DArray(int[][] matrix, int target) {
+        if (matrix.length == 0 || matrix[0].length == 0) {
+            return false;
+        }
+
+        int h = matrix.length;
+        int w = matrix[0].length;
+        int i = 0;
+        int j = 0;
+        while (i >= 0 && j < h) {
+            while ((i + 1) < w && matrix[j][i + 1] <= target) {
+                i++;
+            }
+
+            while ((j + 1) < h && matrix[j + 1][i] <= target) {
+                j++;
+            }
+
+            if (matrix[j][i] == target) {
+                return true;
+            }
+
+            if (matrix[j][i] < target) {
+                j++;
+            }
+
+            i--;
+        }
+
+        return false;
     }
 
     /**

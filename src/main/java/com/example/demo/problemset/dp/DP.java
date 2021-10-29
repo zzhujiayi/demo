@@ -4,16 +4,106 @@ import com.example.demo.problemset.tree.TreeNode;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
 /**
  * 动态规划
  */
 public class DP {
-
     public static void main(String[] args) {
+
+
         DP dp = new DP();
-        dp.fib(45);
+        System.out.println(dp.getRow(4));
+    }
+
+    /**
+     * 119. 杨辉三角 II
+     *
+     * @param rowIndex
+     * @return
+     */
+    public List<Integer> getRow(int rowIndex) {
+        List<Integer> ans = new ArrayList<>();
+        int mid = (int) (Math.ceil((rowIndex + 1) * 1.0 / 2));
+        ans.add(1);
+        if (rowIndex >= 2) {
+            ans.add(rowIndex);
+        }
+
+        for (int i = 2; i < mid; i++) {
+            int n = 1;
+            int c = rowIndex - i;
+            while (c >= 0) {
+                n += i;
+                c--;
+            }
+
+            ans.add(n);
+        }
+
+        for (int i = ans.size() - 1; i >= 0; i--) {
+            ans.add(ans.get(i));
+        }
+
+        return ans;
+    }
+
+    /**
+     * 152. 乘积最大子数组
+     *
+     * @param nums
+     * @return
+     */
+    public int maxProduct(int[] nums) {
+        if (nums.length == 1) {
+            return nums[0];
+        }
+
+        int ans = nums[0];
+        int max = ans;
+        int min = ans;
+        for (int i = 1; i < nums.length; i++) {
+            int mm = Math.max(max * nums[i], Math.max(nums[i], min * nums[i]));
+            int mi = Math.min(min * nums[i], Math.min(nums[i], max * nums[i]));
+
+            max = mm;
+            min = mi;
+
+            ans = Math.max(ans, max);
+        }
+
+        return ans;
+    }
+
+    /**
+     * 139. 单词拆分
+     *
+     * @param s
+     * @param wordDict
+     * @return
+     */
+    public boolean wordBreak(String s, List<String> wordDict) {
+        int max = 0;
+        HashSet<String> hashSet = new HashSet<>();
+        for (String s1 : wordDict) {
+            max = Math.max(max, s1.length());
+            hashSet.add(s1);
+        }
+
+        boolean[] dp = new boolean[s.length() + 1];
+        dp[0] = true;
+        for (int i = 1; i <= s.length(); i++) {
+            for (int j = (Math.max(0, i - max)); j < i; j++) {
+                if (dp[j] && hashSet.contains(s.substring(j, i))) {
+                    dp[i] = true;
+                    break;
+                }
+            }
+        }
+
+        return dp[s.length()];
     }
 
     public int fib(int n) {

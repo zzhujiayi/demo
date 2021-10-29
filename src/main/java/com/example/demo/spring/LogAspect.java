@@ -1,4 +1,4 @@
-package com.example.demo.springlean;
+package com.example.demo.spring;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Order(20)
 public class LogAspect {
-    @Around("@annotation(com.example.demo.springlean.Log)||@within(com.example.demo.springlean.Log)")
+    @Around("@annotation(com.example.demo.spring.Log)||@within(com.example.demo.spring.Log)")
     public Object around(ProceedingJoinPoint joinPoint) throws Throwable {
         return joinPoint.proceed(joinPoint.getArgs());
     }

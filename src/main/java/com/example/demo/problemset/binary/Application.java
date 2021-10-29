@@ -2,7 +2,30 @@ package com.example.demo.problemset.binary;
 
 public class Application {
     public static void main(String[] args) {
-        hammingDistance(4, 1);
+
+        isPowerOfFour(-2147483648);
+    }
+
+    /**
+     * 342. 4的幂
+     *
+     * @param n
+     * @return
+     */
+    public static boolean isPowerOfFour(int n) {
+        return n > 0 && (n & n - 1) != 0 && (n & 0b10101010_10101010_10101010_10101010) == 0;
+    }
+
+    public static int kthGrammar(int n, int k) {
+        if (n == 1) {
+            return 0;
+        }
+
+        if (k <= (1 << (n - 2))) {
+            return kthGrammar(n - 1, k);
+        }
+
+        return kthGrammar(n - 1, k - (1 << (n - 2))) ^ 1;
     }
 
     /**

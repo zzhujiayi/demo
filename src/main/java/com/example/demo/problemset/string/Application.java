@@ -4,9 +4,7 @@ import java.util.*;
 
 public class Application {
     public static void main(String[] args) {
-        String first = "a";
-        String second = "a";
-        System.out.println(oneEditAway(first, second));
+
     }
 
     /**

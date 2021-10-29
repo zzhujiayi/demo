@@ -1,7 +1,6 @@
-package com.example.demo.springlean;
+package com.example.demo.spring;
 
 import lombok.Data;
-import lombok.Singular;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;

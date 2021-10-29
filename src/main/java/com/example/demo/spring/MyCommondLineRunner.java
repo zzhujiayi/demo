@@ -1,4 +1,4 @@
-package com.example.demo.springlean;
+package com.example.demo.spring;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
